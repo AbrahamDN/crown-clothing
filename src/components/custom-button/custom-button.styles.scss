@@ -1,3 +1,9 @@
+@mixin btnColour {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
 .custom-button {
   min-width: 165px;
   width: auto;
@@ -13,19 +19,29 @@
   font-weight: bolder;
   border: none;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
 
   &:hover {
-    background-color: white;
-    color: black;
-    border: 1px solid black;
+    @include btnColour();
   }
 
   &.google-sign-in {
     background-color: #4285f4;
-    color: #fff;
+    color: white;
 
     &:hover {
       background-color: #357ae8;
+      border: none;
+    }
+  }
+
+  &.inverted {
+    @include btnColour();
+
+    &:hover {
+      background-color: black;
+      color: white;
       border: none;
     }
   }
