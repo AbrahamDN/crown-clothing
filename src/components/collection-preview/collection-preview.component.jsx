@@ -6,7 +6,7 @@ import CollectionItem from '../collection-item/collection-item.component';
 import {
   CollectionPreviewContainer,
   TitleContainer,
-  PreviewContainer
+  PreviewContainer,
 } from './collection-preview.styles';
 
 const CollectionPreview = ({ title, items, history, match, routeName }) => (
