@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -6,33 +6,45 @@ import { createStructuredSelector } from 'reselect';
 import { GlobalStyle } from './global.styles';
 
 import Header from './components/header/header.component';
-import HomePage from './pages/homepage/homepage.component';
-import ShopPage from './pages/shop/shop.component';
-import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-ign-and-sign-up.component';
-import CheckoutPage from './pages/checkout/checkout.component';
+// import HomePage from './pages/homepage/homepage.component';
+// import ShopPage from './pages/shop/shop.component';
+// import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-ign-and-sign-up.component';
+// import CheckoutPage from './pages/checkout/checkout.component';
 
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { checkUserSession } from './redux/user/user.actions';
+import Spinner from './components/spinner/spinner.component';
 
 const App = ({ checkUserSession, currentUser }) => {
   useEffect(() => {
     checkUserSession();
   }, [checkUserSession]);
 
+  const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
+  const ShopPage = lazy(() => import('./pages/shop/shop.component'));
+  const SignInAndSignUpPage = lazy(() =>
+    import('./pages/sign-in-and-sign-up/sign-ign-and-sign-up.component')
+  );
+  const CheckoutPage = lazy(() =>
+    import('./pages/checkout/checkout.component')
+  );
+
   return (
     <div>
       <GlobalStyle />
       <Header />
       <Switch>
-        <Route exact path='/' component={HomePage} />
-        <Route path='/shop' component={ShopPage} />
-        <Route exact path='/checkout' component={CheckoutPage} />
-        <Route
-          path='/signIn'
-          render={() =>
-            currentUser ? <Redirect to='/' /> : <SignInAndSignUpPage />
-          }
-        />
+        <Suspense fallback={<Spinner />}>
+          <Route exact path='/' component={HomePage} />
+          <Route path='/shop' component={ShopPage} />
+          <Route exact path='/checkout' component={CheckoutPage} />
+          <Route
+            path='/signIn'
+            render={() =>
+              currentUser ? <Redirect to='/' /> : <SignInAndSignUpPage />
+            }
+          />
+        </Suspense>
       </Switch>
     </div>
   );
