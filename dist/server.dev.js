@@ -18,17 +18,17 @@ var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 var app = express();
 var port = process.env.PORT || 5000;
-app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(enforce.HTTPS({
-  trustProtoHeader: true
-}));
 app.use(cors());
 
 if (process.env.NODE_ENV === 'production') {
+  app.use(compression);
+  app.use(enforce.HTTPS({
+    trustProtoHeader: true
+  }));
   app.use(express["static"](path.join(__dirname, 'client/build')));
   app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.listen(port, function (error) {
   if (error) throw error;
-  console.log('Server running on port' + port);
+  console.log('Server is running on port ' + port);
 });
 app.get('/service-worker.js', function (req, res) {
   res.sendFile(path.resolve(__dirname, '..', 'build', 'service-worker.js'));
