@@ -10,6 +10,8 @@ var path = require('path');
 
 var compression = require('compression');
 
+var enforce = require('express-sslify');
+
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
 var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -20,6 +22,9 @@ app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
+}));
+app.use(enforce.HTTPS({
+  trustProtoHeader: true
 }));
 app.use(cors());
 
@@ -33,6 +38,9 @@ if (process.env.NODE_ENV === 'production') {
 app.listen(port, function (error) {
   if (error) throw error;
   console.log('Server running on port' + port);
+});
+app.get('/service-worker.js', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '..', 'build', 'service-worker.js'));
 });
 app.post('/payment', function (req, res) {
   var body = {
