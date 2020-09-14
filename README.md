@@ -27,7 +27,7 @@ AbrahamDN
 
 - Github: [@abrahamdn](https://github.com/abrahamdn)
 
-- LinkedIn: <a href="https://www.linkedin.com/in/abrahamdn/" target="_blank">Abraham Dieudonne Ndinga</a>
+- LinkedIn: [Abraham Dieudonne Ndinga](https://www.linkedin.com/in/abrahamdn/)
 
 ## 🤝 Contributing
 
